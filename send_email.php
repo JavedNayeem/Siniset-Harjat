@@ -25,7 +25,7 @@ try {
 
     // Email settings
     $mail->setFrom($email, $name);
-    $mail->addAddress("javednayeem@gmail.com");
+    $mail->addAddress("javednayeemavi@gmail.com");
     $mail->Subject = "New Contact Form Submission";
     $mail->Body = "Name: $name\nEmail: $email\nPhone: $phone\nMessage:\n$message";
 
