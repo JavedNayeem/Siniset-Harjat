@@ -15,6 +15,7 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -474,10 +475,54 @@
                     <!-- an error submitting the form-->
                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                     <!-- Submit Button-->
-                    <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase disabled" id="submitButton" type="submit">Send Message</button></div>
+                    <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Send Message</button></div>
                 </form>
             </div>
         </section>
+
+        <script>
+
+            $(document).ready(function () {
+                $("#contactForm").submit(function (e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    // Get form values
+                    var name = $("#name").val();
+                    var email = $("#email").val();
+                    var phone = $("#phone").val();
+                    var message = $("#message").val();
+
+                    // Basic validation
+                    if (name === "" || email === "" || phone === "" || message === "") {
+                        $("#submitErrorMessage").removeClass("d-none");
+                        return;
+                    }
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "send_email.php", // PHP script that sends the email
+                        type: "POST",
+                        data: {
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            message: message
+                        },
+                        success: function (response) {
+                            if (response == "success") {
+                                $("#submitSuccessMessage").removeClass("d-none");
+                                $("#submitErrorMessage").addClass("d-none");
+                                $("#contactForm")[0].reset(); // Reset form
+                            } else {
+                                $("#submitErrorMessage").removeClass("d-none");
+                                $("#submitSuccessMessage").addClass("d-none");
+                            }
+                        }
+                    });
+                });
+            });
+
+        </script>
         <!-- Footer-->
         <footer class="footer py-4">
             <div class="container">
